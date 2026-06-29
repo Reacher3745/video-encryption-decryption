@@ -2,29 +2,8 @@ def decrypt_video(pwd , evdo_path , out_vdo_path):
     import cv2
     import random
     import numpy as np
-
-    def permuteinv(pt, pbox):
-        pt = np.array(pt).flatten().tolist()
-        pt1 = pt.copy()
-        for k in range(64):
-            pt1[pbox[k]] = pt[k]
-        return np.array(pt1).reshape(8,8)
-        
-    def subinv(pt, sbox):
-        pt = np.array(pt).flatten().tolist()
-        pt1 = pt.copy()
-        for k in range(64):
-            pt1[k] = sbox.index(pt[k])
-        return np.array(pt1).reshape(8,8)
-        
-    def diffusion(frame , key):
-        eframe = frame.copy()
-        for ch in range(3):
-            for i in range(256):
-                for j in range(256):
-                    eframe[i ,j , ch] = (frame[i,j,ch] ^ key[i , j , ch])
-        return eframe 
-        
+    from utils import permuteinv, subinv, diffusion 
+    
     seedd = 0
     for i in str(pwd):
         seedd += ord(i)
